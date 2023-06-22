@@ -2,6 +2,7 @@ import express from "express";
 import {engine} from "express-handlebars";
 import indexRoutes from "./routes/index.routes";
 import path from "path";
+import morgan from "morgan";
 
 const app = express();
 
@@ -18,8 +19,15 @@ app.engine('.hbs', engine({
 
 }));
 app.set("view engine", ".hbs");
- 
+
+//middLewares - mostrar logs por consola
+app.use(morgan('dev'))
+app.use(express.urlencoded({extended: false}))
+
 //routes
 app.use(indexRoutes);
+
+//archivos estaticos
+app.use(express.static(path.join(__dirname,"public")))
 
 export default app;
